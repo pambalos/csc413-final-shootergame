@@ -14,6 +14,7 @@ import static shootergame.helpers.GameConstants.SCREEN_WIDTH;
 import shootergame.helpers.CollisionHandler;
 import shootergame.helpers.LevelManager;
 import shootergame.helpers.PlayerControl;
+import shootergame.helpers.PlayerManager;
 import shootergame.helpers.ResourceLoader;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
@@ -69,8 +70,8 @@ public class ShooterGame extends JPanel  {
         ShooterGame shooterGame = new ShooterGame();
         shooterGame.init();
         CollisionHandler chandler = new CollisionHandler();
-        LevelManager manager = new LevelManager();
-        manager.init(shooterGame.gameObjects);
+        PlayerManager playerManager = new PlayerManager(shooterGame.player);
+        LevelManager levelManager = new LevelManager(shooterGame.gameObjects, playerManager);
         try {
             while (true) {
 
@@ -79,7 +80,7 @@ public class ShooterGame extends JPanel  {
                 }
                 shooterGame.repaint();
 
-                manager.manageLevel(); //should call manager tick
+                levelManager.manageLevel(); //should call manager tick
 
                 /*
                 ArrayList<GameObject> toRemove = new ArrayList<>();

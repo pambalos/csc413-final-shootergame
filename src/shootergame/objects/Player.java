@@ -38,6 +38,7 @@ public class Player extends Ship {
 
     public void respawn() {
         this.resetHealth();
+        this.loseLife();
         this.setX(ogX);
         this.setY(ogY);
         System.out.println("Respawning x: " + ogX + "  y: " + ogY + " health: " + this.getHealth());
@@ -135,6 +136,10 @@ public class Player extends Ship {
             this.getGameObjects().add(b);
         }
         this.setCounter(this.getCounter()+1);
+
+        if (this.getHealth() < 1) {
+            this.respawn();
+        }
     }
 
     private void move(movement m) {

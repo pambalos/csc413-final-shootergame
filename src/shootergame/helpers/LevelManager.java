@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class LevelManager {
+
     private ArrayList<GameObject> enemiesNObstacles;
     private ArrayList<GameObject> gameObjects;
-    private long t, counter = 0;
+    private long t, counter;
 
     public void manageLevel() {
         t++;
@@ -31,10 +32,10 @@ public class LevelManager {
         }
     }
 
-    public void init(ArrayList<GameObject> gameObjects) {
+    public LevelManager(ArrayList<GameObject> gameObjects, PlayerManager playerManager) {
         this.enemiesNObstacles = new ArrayList<>();
         this.gameObjects = gameObjects;
-        this.t = 0;
+        this.t = 0; this.counter = 0;
         try {
 
             BufferedReader mapReader = new BufferedReader(new FileReader("resources/maps/level1"));
@@ -52,7 +53,7 @@ public class LevelManager {
                 for (int currCol = 0; currCol < numCols; currCol++) {
                     switch (Integer.parseInt(mapInfo[currCol])) {
                         case 1 :
-                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects));
+                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects, playerManager));
                             break;
                         case 13 :
                             //enemiesNObstacles.add(new BreakableMeteor(currCol*100, , -100));
