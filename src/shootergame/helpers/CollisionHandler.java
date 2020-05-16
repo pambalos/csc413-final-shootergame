@@ -5,7 +5,7 @@ import shootergame.objects.Laser;
 import shootergame.objects.Collidable;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
-import shootergame.objects.obstacles.Obstacle;
+import shootergame.objects.obstacles.Meteor;
 import shootergame.objects.powerups.PowerUp;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class CollisionHandler {
         if (object1 instanceof Player) {
             Player player = (Player) object1;
 
-            if (object2 instanceof Obstacle) { //if its a wall, bounce back a bit
+            if (object2 instanceof Meteor) { //if its a wall, bounce back a bit
                 player.repel();
             }
 

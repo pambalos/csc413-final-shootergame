@@ -14,20 +14,15 @@ public class Player extends Ship {
 
     private enum movement { forward, backward, left, right }
 
-    //private int speed = 3;
-
-    //private BufferedImage objectImage;
     private boolean UpPressed;
     private boolean downPressed;
     private boolean rightPressed;
     private boolean leftPressed;
     private boolean shootPressed;
-    //private ArrayList<GameObject> gameObjects;
-    //private long counter;
+
     private movement hackMove = movement.backward;
     private int lives;
     private int ogX, ogY;
-    //private int loadTime = 50;
 
     public void repel() {
         this.move(hackMove);
@@ -136,7 +131,6 @@ public class Player extends Ship {
 
         if (this.shootPressed && this.getCounter() > this.getLoadTime()) {
             this.setCounter(0);
-            //System.out.println("shoot");
             Laser b = new Laser(this.getX()+24, this.getY()-25, ResourceLoader.getResourceImage("playerLaser"), this, 2*this.getSpeed());
             this.getGameObjects().add(b);
         }
@@ -170,7 +164,6 @@ public class Player extends Ship {
     @Override
     public void drawImage(Graphics g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(this.getX(), this.getY());
-        //rotation.rotate(Math.toRadians(angle), this.objectImage.getWidth() / 2.0, this.objectImage.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.getImage(), rotation, null);
     }

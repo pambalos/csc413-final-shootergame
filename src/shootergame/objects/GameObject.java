@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class GameObject {
 
-    private int x, y;
+    private int x, y, speed;
     private BufferedImage image;
 
     public void checkBorder() {
@@ -61,5 +61,13 @@ public abstract class GameObject {
 
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

@@ -16,7 +16,9 @@ import shootergame.helpers.PlayerControl;
 import shootergame.helpers.ResourceLoader;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
+import shootergame.objects.enemies.SmallEnemy;
 import shootergame.objects.layout.HUD;
+import shootergame.objects.obstacles.BreakableMeteor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,6 +27,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -105,9 +113,9 @@ public class ShooterGame extends JPanel  {
         this.world = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
         super.paintComponent(buffer);
         buffer = world.createGraphics();
-        buffer.setColor(Color.black);
+        buffer.setColor(Color.DARK_GRAY);
         buffer.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT+30);
-        Font font = new Font("Serif", Font.BOLD, 50);
+        Font font = new Font("Serif", Font.PLAIN, 50);
         buffer.setFont(font);
         buffer.setColor(Color.CYAN);
         buffer.drawString("GAME OVER!!", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
@@ -124,35 +132,16 @@ public class ShooterGame extends JPanel  {
         this.jFrame = new JFrame("Player Rotation");
         this.world = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
         gameObjects = new ArrayList<>();
+        ArrayList<GameObject> enemiesNObstacles = new ArrayList<>();
 
-        /*
         try {
+            //File f = new File("resources/maps/level1");
 
-
-             * There is a subtle difference between using class
-             * loaders and File objects to read in resources for your
-             * tank games. First, File objects when given to input readers
-             * will use your project's working directory as the base path for
-             * finding the file. Class loaders will use the class path of the project
-             * as the base path for finding files. For Intellij, this will be in the out
-             * folder. if you expand the out folder, the expand the production folder, you
-             * will find a folder that has the same name as your project. This is the folder
-             * where your class path points to by default. Resources, will need to be stored
-             * in here for class loaders to load resources correctly.
-             *
-             * Also one important thing to keep in mind, Java input readers given File objects
-             * cannot be used to access file in jar files. So when building your jar, if you want
-             * all files to be stored inside the jar, you'll need to class loaders and not File
-             * objects.
-             *
-             */
-            //Using class loaders to read in resources
-            //tankImage = read(ShooterGame.class.getClassLoader().getResource("resources/tank1.png"));
-            //Using file objects to read in resources.
-
-            //InputStreamReader isr = new InputStreamReader(ShooterGame.class.getClassLoader().getResourceAsStream("resources/maps/bigMap"));
+            //FileInputStream fis = new FileInputStream(f);
+            //InputStreamReader isr = new InputStreamReader(fis);
             //BufferedReader mapReader = new BufferedReader(isr);
-            /*
+            BufferedReader mapReader = new BufferedReader(new FileReader("resources/maps/level1"));
+
             String row = mapReader.readLine();
             if (row == null) throw new IOException("Nothing in map file");
 
@@ -160,37 +149,24 @@ public class ShooterGame extends JPanel  {
             int numCols = Integer.parseInt(mapInfo[0]);
             int numRows = Integer.parseInt(mapInfo[1]);
 
-            for (int curRow = 0; curRow < numRows; curRow++) {
+            for (int currRow = 0; currRow < numRows; currRow++) {
                 row = mapReader.readLine();
                 mapInfo = row.split(",");
-                for (int curCol = 0; curCol < numCols; curCol++) {
-                    switch (Integer.parseInt(mapInfo[curCol])) {
-                        case 2 : //breakable
-                            this.gameObjects.add(new BreakableMeteor(curCol*30, curRow*30));
+                for (int currCol = 0; currCol < numCols; numCols++) {
+                    switch (Integer.parseInt(mapInfo[currCol])) {
+                        case 1 :
+                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects));
                             break;
-                        case 3: //unbreakable
-                        case 9: //borders
-                            this.gameObjects.add(new UnbreakableMeteor(curCol*30, curRow*30));
-                            break;
-                        case 4:
-                            this.gameObjects.add(new Health(curCol*30, curRow*30));
-                            break;
-                        case 5:
-                            this.gameObjects.add(new MovementBoost(curCol*30, curRow*30));
-                            break;
-                        case 6:
-                            this.gameObjects.add(new GunBoost(curCol*30, curRow*30));
-                            break;
-                        case 7:
-                            this.gameObjects.add(new Shield(curCol*30, curRow*30));
+                        case 13 :
+                            //enemiesNObstacles.add(new BreakableMeteor(currCol*100, , -100));
                             break;
                     }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        } */
         this.player = new Player(SCREEN_WIDTH/2, 650, ResourceLoader.getResourceImage("playerShip"), this.gameObjects);
 
         HUD hud = new HUD(player, HUD_OFFSET_X, HUD_OFFSET_Y);

@@ -1,13 +1,15 @@
 package shootergame.objects.obstacles;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-public class UnbreakableMeteor extends Obstacle {
+public class UnbreakableMeteor extends Meteor {
 
-    public UnbreakableMeteor(int x, int y) {
+    public UnbreakableMeteor(int x, BufferedImage image) {
         this.setX(x);
-        this.setY(y);
-        this.setHitBox(new Rectangle(x, y, 30, 30));
+        this.setY(-100);
+        this.setImage(image);
+        this.setHitBox(new Rectangle(this.getX(), this.getY(), image.getWidth(), image.getHeight()));
     }
 
 }

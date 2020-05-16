@@ -9,13 +9,15 @@ import java.util.ArrayList;
 
 public class SmallEnemy extends Ship {
 
-    public SmallEnemy(int x,int speed, BufferedImage image, ArrayList<GameObject> gameObjects) {
+    private int spawnTime;
+
+    public SmallEnemy(int x,int speed, int spawnTime, BufferedImage image, ArrayList<GameObject> gameObjects) {
         this.setX(x);
         this.setY(-100);
         this.setSpeed(speed);
         this.setImage(image);
         this.setHitBox(new Rectangle(x, this.getY(), this.getImage().getWidth(), this.getImage().getHeight()));
         this.setGameObjects(gameObjects);
-
+        this.spawnTime = spawnTime;
     }
 }

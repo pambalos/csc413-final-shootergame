@@ -1,15 +1,17 @@
 package shootergame.objects.obstacles;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-public class BreakableMeteor extends Obstacle {
+public class BreakableMeteor extends Meteor {
     int health;
 
-    public BreakableMeteor(int x, int y) {
+    public BreakableMeteor(int x, BufferedImage image) {
         this.setX(x);
-        this.setY(y);
+        this.setY(-100);
         this.health = 50;
-        this.setHitBox(new Rectangle(x, y, this.getImage().getWidth(), this.getImage().getHeight()));
+        this.setImage(image);
+        this.setHitBox(new Rectangle(this.getX(), this.getY(), image.getWidth(), image.getHeight()));
     }
 
     public void takeDamage(int i) {
