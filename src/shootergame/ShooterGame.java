@@ -12,13 +12,13 @@ import static shootergame.helpers.GameConstants.SCREEN_HEIGHT;
 import static shootergame.helpers.GameConstants.SCREEN_WIDTH;
 
 import shootergame.helpers.CollisionHandler;
+import shootergame.helpers.LevelManager;
 import shootergame.helpers.PlayerControl;
 import shootergame.helpers.ResourceLoader;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
 import shootergame.objects.enemies.SmallEnemy;
 import shootergame.objects.layout.HUD;
-import shootergame.objects.obstacles.BreakableMeteor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,11 +28,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -61,7 +58,6 @@ import javax.swing.JPanel;
  */
 public class ShooterGame extends JPanel  {
 
-
     private BufferedImage world;
     private Graphics2D buffer;
     private JFrame jFrame;
@@ -73,6 +69,8 @@ public class ShooterGame extends JPanel  {
         ShooterGame shooterGame = new ShooterGame();
         shooterGame.init();
         CollisionHandler chandler = new CollisionHandler();
+        LevelManager manager = new LevelManager();
+        manager.init(shooterGame.gameObjects);
         try {
             while (true) {
 
@@ -80,6 +78,10 @@ public class ShooterGame extends JPanel  {
                     shooterGame.gameObjects.get(i).update();
                 }
                 shooterGame.repaint();
+
+                manager.manageLevel(); //should call manager tick
+
+                /*
                 ArrayList<GameObject> toRemove = new ArrayList<>();
                 int currObjs = shooterGame.gameObjects.size();
                 for (int i1 = 0; i1 < currObjs; i1++) {
@@ -88,11 +90,15 @@ public class ShooterGame extends JPanel  {
                             GameObject object1 = shooterGame.gameObjects.get(i1);
                             GameObject object2 = shooterGame.gameObjects.get(i2);
                             if (chandler.collisionCompare(object1, object2)) {
-                                chandler.handleCollision(toRemove, object1, object2);
+                                chandler.handleCollisionInstance(object1, object2);
                             }
                         }
                     }
                 }
+
+                 */
+                ArrayList<GameObject> toRemove = chandler.handleCollisions(shooterGame.gameObjects);
+
                 for (GameObject o : toRemove) {
                     shooterGame.gameObjects.remove(o);
                     if (o instanceof Player) { //ship died so end game
@@ -100,7 +106,6 @@ public class ShooterGame extends JPanel  {
                         return;
                     }
                 }
-                //checkCollisions
                 Thread.sleep(1000 / 120);
             }
 
@@ -132,40 +137,7 @@ public class ShooterGame extends JPanel  {
         this.jFrame = new JFrame("Player Rotation");
         this.world = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
         gameObjects = new ArrayList<>();
-        ArrayList<GameObject> enemiesNObstacles = new ArrayList<>();
 
-        try {
-            //File f = new File("resources/maps/level1");
-
-            //FileInputStream fis = new FileInputStream(f);
-            //InputStreamReader isr = new InputStreamReader(fis);
-            //BufferedReader mapReader = new BufferedReader(isr);
-            BufferedReader mapReader = new BufferedReader(new FileReader("resources/maps/level1"));
-
-            String row = mapReader.readLine();
-            if (row == null) throw new IOException("Nothing in map file");
-
-            String[] mapInfo = row.split(",");
-            int numCols = Integer.parseInt(mapInfo[0]);
-            int numRows = Integer.parseInt(mapInfo[1]);
-
-            for (int currRow = 0; currRow < numRows; currRow++) {
-                row = mapReader.readLine();
-                mapInfo = row.split(",");
-                for (int currCol = 0; currCol < numCols; numCols++) {
-                    switch (Integer.parseInt(mapInfo[currCol])) {
-                        case 1 :
-                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects));
-                            break;
-                        case 13 :
-                            //enemiesNObstacles.add(new BreakableMeteor(currCol*100, , -100));
-                            break;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         this.player = new Player(SCREEN_WIDTH/2, 650, ResourceLoader.getResourceImage("playerShip"), this.gameObjects);
 

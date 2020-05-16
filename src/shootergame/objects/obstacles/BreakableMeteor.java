@@ -6,12 +6,13 @@ import java.awt.image.BufferedImage;
 public class BreakableMeteor extends Meteor {
     int health;
 
-    public BreakableMeteor(int x, BufferedImage image) {
+    public BreakableMeteor(int x, BufferedImage image, int spawnTime) {
         this.setX(x);
         this.setY(-100);
         this.health = 50;
         this.setImage(image);
         this.setHitBox(new Rectangle(this.getX(), this.getY(), image.getWidth(), image.getHeight()));
+        this.setSpawnTime(spawnTime);
     }
 
     public void takeDamage(int i) {
