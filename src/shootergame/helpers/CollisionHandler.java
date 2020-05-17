@@ -50,6 +50,23 @@ public class CollisionHandler {
                     System.out.println("Destroyed Enemy");
                 }
             }
+            if (object2 instanceof BreakableMeteor) {
+                toRemove.add(object1);
+                BreakableMeteor meteor = (BreakableMeteor) object2;
+                meteor.takeDamage(20);
+                if (meteor.getHealth() < 1) {
+                    toRemove.add(object2);
+                    System.out.println("Destroyed Meteor");
+                }
+            }
+
+        } else if (object1 instanceof Obstacle) {
+            if (object2 instanceof Player) {
+                toRemove.add(object1);
+                Player player = (Player) object2;
+                player.respawn();
+                System.out.println("Player collision with obstacle");
+            }
         }
     }
 
@@ -63,7 +80,6 @@ public class CollisionHandler {
         return object1 instanceof Collidable &&
                 object2 instanceof Collidable &&
                 !(object1 instanceof Obstacle && object2 instanceof Obstacle) &&
-
                 ((Collidable)object1).getHitBoxBounds().intersects(((Collidable)object2).getHitBoxBounds()) &&
                 object1 != ((Collidable) object2).getOwner() &&
                 object2 != ((Collidable) object1).getOwner();

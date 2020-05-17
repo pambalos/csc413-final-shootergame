@@ -51,6 +51,9 @@ public abstract class GameObject {
         g2d.drawImage(this.getImage(), rotation, null);
     }
 
+    /**
+     * default do nothing update allows for individual unique behavior
+     */
     public void update() {
 
     }

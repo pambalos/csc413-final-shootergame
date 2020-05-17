@@ -2,18 +2,44 @@ package shootergame.helpers;
 
 import shootergame.objects.GameObject;
 import shootergame.objects.Obstacle;
+import shootergame.objects.Player;
 import shootergame.objects.enemies.SmallEnemy;
+import shootergame.objects.obstacles.BreakableMeteor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/*
+ * map values
+ * 0 - nothing
+ * 1 - enemy
+ * 11 - breakable meteor small
+ * 12 - breakable meteor med
+ * 13 - breakable meteor big
+ * 21 - unbreakable meteor small
+ * 22 - unbreakable meteor med
+ * 23 - unbreakable meteor big
+ * 4 - 8 power ups 4: health, 5: mspeed, 6: bspeed, 7: shield
+ */
+
 public class LevelManager {
 
     private ArrayList<GameObject> enemiesNObstacles;
     private ArrayList<GameObject> gameObjects;
     private long t, counter;
+
+    public boolean isGameOver() {
+        if (enemiesNObstacles.isEmpty()) {
+            for (int i = 0; i < gameObjects.size(); i++) {
+                if (gameObjects.get(i) instanceof Obstacle) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public void manageLevel() {
         t++;
@@ -32,7 +58,7 @@ public class LevelManager {
         }
     }
 
-    public LevelManager(ArrayList<GameObject> gameObjects, PlayerManager playerManager) {
+    public LevelManager(ArrayList<GameObject> gameObjects, Player player) {
         this.enemiesNObstacles = new ArrayList<>();
         this.gameObjects = gameObjects;
         this.t = 0; this.counter = 0;
@@ -53,10 +79,11 @@ public class LevelManager {
                 for (int currCol = 0; currCol < numCols; currCol++) {
                     switch (Integer.parseInt(mapInfo[currCol])) {
                         case 1 :
-                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects, playerManager));
+                            enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects, player));
                             break;
                         case 13 :
-                            //enemiesNObstacles.add(new BreakableMeteor(currCol*100, , -100));
+                            System.out.println("Adding Meteor");
+                            enemiesNObstacles.add(new BreakableMeteor(currCol*100, ResourceLoader.getResourceImage("breakableMeteorBig"), currRow, 2));
                             break;
                     }
                 }

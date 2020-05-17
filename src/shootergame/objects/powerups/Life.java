@@ -2,14 +2,14 @@ package shootergame.objects.powerups;
 
 import shootergame.objects.Player;
 
-public class GunBoost extends PowerUp {
+public class Life extends PowerUp {
 
-    public GunBoost(int x, int y) {
-        super(x, y, "gunboost");
+    public Life(int x, int y) {
+        super(x, y, "life");
     }
 
     @Override
     public void powerUpPlayer(Player player) {
-        player.decreaseLoadTime();
+        player.addLife();
     }
 }

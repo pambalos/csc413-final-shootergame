@@ -59,7 +59,11 @@ public class Player extends Ship {
     }
 
     public void decreaseLoadTime() {
-        if (this.getLoadTime() > 12) this.setLoadTime(this.getLoadTime() - 11);
+        if (this.getLoadTime()-10 >= 0) {
+            this.setLoadTime(this.getLoadTime() - 10);
+        } else {
+            this.setLoadTime(0);
+        }
     }
 
     public void increaseMovementSpeed() {
@@ -132,7 +136,7 @@ public class Player extends Ship {
 
         if (this.shootPressed && this.getCounter() > this.getLoadTime()) {
             this.setCounter(0);
-            Laser b = new Laser(this.getX()+24, this.getY()-25, ResourceLoader.getResourceImage("playerLaser"), this, 2*this.getSpeed());
+            Laser b = new Laser(this.getX()+24, this.getY()-25, ResourceLoader.getResourceImage("playerLaser"), this, -2*this.getSpeed());
             this.getGameObjects().add(b);
         }
         this.setCounter(this.getCounter()+1);

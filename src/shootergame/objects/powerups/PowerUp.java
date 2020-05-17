@@ -14,7 +14,7 @@ public abstract class PowerUp extends Collidable {
     public PowerUp(int x, int y, String key) {
         this.setX(x);
         this.setY(y);
-        this.setHitBox(new Rectangle(x, y, 30, 30));
+        this.setHitBox(new Rectangle(x, y, this.getImage().getWidth(), this.getImage().getHeight()));
         this.fileKey = key;
     }
 
@@ -24,6 +24,6 @@ public abstract class PowerUp extends Collidable {
         g2.drawImage(ResourceLoader.getResourceImage(fileKey), this.getX(), this.getY(), null);
     }
 
-    public abstract void powerUpTank(Player player);
+    public abstract void powerUpPlayer(Player player);
 }
 

@@ -14,11 +14,9 @@ import static shootergame.helpers.GameConstants.SCREEN_WIDTH;
 import shootergame.helpers.CollisionHandler;
 import shootergame.helpers.LevelManager;
 import shootergame.helpers.PlayerControl;
-import shootergame.helpers.PlayerManager;
 import shootergame.helpers.ResourceLoader;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
-import shootergame.objects.enemies.SmallEnemy;
 import shootergame.objects.layout.HUD;
 
 import java.awt.BorderLayout;
@@ -28,26 +26,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-/*
- * map values
- * 0 - nothing
- * 1 - enemy
- * 11 - breakable meteor small
- * 12 - breakable meteor med
- * 13 - breakable meteor big
- * 21 - unbreakable meteor small
- * 22 - unbreakable meteor med
- * 23 - unbreakable meteor big
- * 4 - 8 power ups 4: health, 5: mspeed, 6: bspeed, 7: shield
- */
 
 /**
  * Main driver class of Player
@@ -70,8 +52,7 @@ public class ShooterGame extends JPanel  {
         ShooterGame shooterGame = new ShooterGame();
         shooterGame.init();
         CollisionHandler chandler = new CollisionHandler();
-        PlayerManager playerManager = new PlayerManager(shooterGame.player);
-        LevelManager levelManager = new LevelManager(shooterGame.gameObjects, playerManager);
+        LevelManager levelManager = new LevelManager(shooterGame.gameObjects, shooterGame.player);
         try {
             while (true) {
 

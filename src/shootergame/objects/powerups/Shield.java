@@ -9,7 +9,7 @@ public class Shield extends PowerUp {
     }
 
     @Override
-    public void powerUpTank(Player player) {
+    public void powerUpPlayer(Player player) {
         player.resetHealth();
     }
 }

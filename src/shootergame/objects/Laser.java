@@ -7,11 +7,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Laser extends Collidable {
-    int speed;
     BufferedImage laserImage;
 
     public Laser(int x, int y, BufferedImage laserImage, Ship shotFrom, int speed) {
-        this.speed = speed;
+        this.setSpeed(speed);
         this.setX(x);
         this.setY(y);
         this.laserImage = laserImage;
@@ -20,8 +19,8 @@ public class Laser extends Collidable {
         this.beingHandled = false;
     }
 
-    public void moveForwards() {
-        this.setY(this.getY() - speed);
+    public void move() {
+        this.setY(this.getY() + this.getSpeed());
         this.getHitBox().setLocation(this.getX(), this.getY());
     }
 
@@ -31,7 +30,7 @@ public class Laser extends Collidable {
     }
 
     public void update() {
-        moveForwards();
+        move();
     }
 
     public void drawImage(Graphics g) {

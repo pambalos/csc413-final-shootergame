@@ -27,7 +27,7 @@ public class HUD extends GameObject {
         g2.setColor(Color.CYAN);
         Font font = new Font("Serif", Font.PLAIN, 18);
         g2.setFont(font);
-        g2.drawString("Health: " + player.getHealth(), this.getX(), this.getY()); //Draw health count
+        g2.drawString("Life: " + player.getHealth(), this.getX(), this.getY()); //Draw health count
         g2.drawString("Lives: " + player.getLives(), this.getX(), this.getY() + 30); //Draw Life Count
     }
 
