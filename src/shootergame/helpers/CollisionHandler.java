@@ -58,7 +58,7 @@ public class CollisionHandler {
                     System.out.println("Destroyed Enemy");
                 }
             }
-            if (object2 instanceof BreakableMeteor) {
+            if ((((Laser)object1).getOwner() instanceof Player) && object2 instanceof BreakableMeteor) {
                 toRemove.add(object1);
                 BreakableMeteor meteor = (BreakableMeteor) object2;
                 meteor.takeDamage(20);

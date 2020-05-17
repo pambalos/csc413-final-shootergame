@@ -12,6 +12,7 @@ import shootergame.objects.Ship;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * If I had more time, this would be one among many enemy types... And they would shoot...
@@ -31,6 +32,8 @@ public class SmallEnemy extends Ship implements Obstacle {
         this.spawnTime = spawnTime;
         this.setHealth(3);
         this.player = player;
+        Random random = new Random();
+        this.setLoadTime(random.nextInt(500 - 250 + 1) + 250);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class SmallEnemy extends Ship implements Obstacle {
             getGameObjects().remove(this);
         }
         if (this.getCounter() > this.getLoadTime()) {
-            getGameObjects().add(new Laser(this.getX(), this.getY(), ResourceLoader.getResourceImage("enemy1Laser"), this, this.getSpeed()*2));
+            getGameObjects().add(new Laser(this.getX()+20, this.getY()+30, ResourceLoader.getResourceImage("enemy1Laser"), this, this.getSpeed()*2));
             this.setCounter(0);
             System.out.println("Should shoot...");
         }

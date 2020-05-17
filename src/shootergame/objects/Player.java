@@ -136,7 +136,7 @@ public class Player extends Ship {
         if (this.shootPressed) {
             long loadTime = this.getLoadTime();
             if (overDriveActive) {
-                loadTime = 0;
+                loadTime = 1;
             }
             if (this.getCounter() > loadTime) {
                 this.setCounter(0);
