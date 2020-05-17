@@ -1,10 +1,16 @@
 package shootergame.helpers;
 
 import shootergame.objects.GameObject;
+import shootergame.objects.Laser;
 import shootergame.objects.Obstacle;
 import shootergame.objects.Player;
 import shootergame.objects.enemies.SmallEnemy;
 import shootergame.objects.obstacles.BreakableMeteor;
+import shootergame.objects.obstacles.UnbreakableMeteor;
+import shootergame.objects.powerups.OverDrive;
+import shootergame.objects.powerups.Life;
+import shootergame.objects.powerups.MovementBoost;
+import shootergame.objects.powerups.Shield;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -53,7 +59,6 @@ public class LevelManager {
                     i--;
                 }
             }
-
             t = 0;
         }
     }
@@ -81,9 +86,24 @@ public class LevelManager {
                         case 1 :
                             enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects, player));
                             break;
+                        case 4:
+                            enemiesNObstacles.add(new Life(currCol*100, currRow));
+                            break;
+                        case 5:
+                            enemiesNObstacles.add(new MovementBoost(currCol*100, currRow));
+                            break;
+                        case 6:
+                            enemiesNObstacles.add(new OverDrive(currCol*100, currRow));
+                            break;
+                        case 7:
+                            enemiesNObstacles.add(new Shield(currCol*100, currRow));
+                            break;
                         case 13 :
                             System.out.println("Adding Meteor");
                             enemiesNObstacles.add(new BreakableMeteor(currCol*100, ResourceLoader.getResourceImage("breakableMeteorBig"), currRow, 2));
+                            break;
+                        case 23:
+                            enemiesNObstacles.add(new UnbreakableMeteor(currCol*100, ResourceLoader.getResourceImage("unbreakableMeteorBig"), currRow, 1));
                             break;
                     }
                 }

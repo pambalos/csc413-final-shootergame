@@ -16,7 +16,7 @@ public class UnbreakableMeteor extends Meteor {
             this.setSpeed(-1);
         }
         this.setSideSpeed(sideSpeed);
-        this.setY(-100);
+        this.setY(0-image.getHeight());
         this.setX(x);
         this.setImage(image);
         this.setHitBox(new Rectangle(this.getX(), this.getY(), image.getWidth(), image.getHeight()));

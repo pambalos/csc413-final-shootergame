@@ -2,14 +2,15 @@ package shootergame.objects.powerups;
 
 import shootergame.objects.Player;
 
-public class GunBoost extends PowerUp {
+public class OverDrive extends PowerUp {
 
-    public GunBoost(int x, int y) {
-        super(x, y, "gunboost");
+    public OverDrive(int x, int spawnTime) {
+        super(x, spawnTime, "overdrive");
     }
 
     @Override
     public void powerUpPlayer(Player player) {
         player.decreaseLoadTime();
+        player.toggleOverDrive(true);
     }
 }

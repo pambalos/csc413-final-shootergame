@@ -10,19 +10,25 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends Ship {
+enum movement { forward, backward, left, right }
 
-    private enum movement { forward, backward, left, right }
+public class Player extends Ship {
 
     private boolean UpPressed;
     private boolean downPressed;
     private boolean rightPressed;
     private boolean leftPressed;
     private boolean shootPressed;
+    private boolean overDriveActive;
 
     private movement hackMove = movement.backward;
     private int lives;
     private int ogX, ogY;
+    private int overDriveCounter;
+
+    public void toggleOverDrive(boolean active) {
+        overDriveActive = active;
+    }
 
     public void repel() {
         this.move(hackMove);
@@ -134,12 +140,27 @@ public class Player extends Ship {
             this.hackMove = movement.left;
         }
 
-        if (this.shootPressed && this.getCounter() > this.getLoadTime()) {
-            this.setCounter(0);
-            Laser b = new Laser(this.getX()+24, this.getY()-25, ResourceLoader.getResourceImage("playerLaser"), this, -2*this.getSpeed());
-            this.getGameObjects().add(b);
+        if (this.shootPressed) {
+            long loadTime = this.getLoadTime();
+            if (overDriveActive) {
+                loadTime = 0;
+            }
+            if (this.getCounter() > loadTime) {
+                this.setCounter(0);
+                Laser b = new Laser(this.getX() + 24, this.getY() - 25, ResourceLoader.getResourceImage("playerLaser"), this, -2 * this.getSpeed());
+                this.getGameObjects().add(b);
+            }
         }
+
         this.setCounter(this.getCounter()+1);
+
+        if (overDriveActive) {
+            this.overDriveCounter++;
+            if (this.overDriveCounter > 1000) {
+                toggleOverDrive(false);
+                this.overDriveCounter = 0;
+            }
+        }
 
         if (this.getHealth() < 1) {
             this.respawn();
@@ -147,18 +168,22 @@ public class Player extends Ship {
     }
 
     private void move(movement m) {
+        int speed = this.getSpeed();
+        if (overDriveActive) {
+            speed *= 1.5;
+        }
         switch (m) {
             case forward:
-                this.setY(this.getY() - this.getSpeed());
+                this.setY(this.getY() - speed);
                 break;
             case backward:
-                this.setY(this.getY() + this.getSpeed());
+                this.setY(this.getY() + speed);
                 break;
             case left:
-                this.setX(this.getX() - this.getSpeed());
+                this.setX(this.getX() - speed);
                 break;
             case right:
-                this.setX(this.getX() + this.getSpeed());
+                this.setX(this.getX() + speed);
                 break;
         }
         this.checkBorder();

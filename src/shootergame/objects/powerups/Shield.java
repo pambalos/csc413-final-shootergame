@@ -4,8 +4,8 @@ import shootergame.objects.Player;
 
 public class Shield extends PowerUp {
 
-    public Shield(int x, int y) {
-        super(x, y, "shield");
+    public Shield(int x, int spawnTime) {
+        super(x, spawnTime, "shield");
     }
 
     @Override

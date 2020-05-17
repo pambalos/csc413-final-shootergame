@@ -30,9 +30,20 @@ public class CollisionHandler {
                 }
             }
         }
-
+        cleanUpBullets(gameObjects);
         return toRemove;
     }
+
+    private void cleanUpBullets(ArrayList<GameObject> gameObjects) {
+        for (int i = 0; i < gameObjects.size(); i++) {
+            if (gameObjects.get(i) instanceof Laser) {
+                if (((Laser)gameObjects.get(i)).isOutOfBounds()) {
+                    toRemove.add(gameObjects.get(i));
+                }
+            }
+        }
+    }
+
 
     /**
      * Do a bunch of collision handling here - decided to implement all collision logic here, then objects will use functional methods to be affected
@@ -60,12 +71,18 @@ public class CollisionHandler {
                 }
             }
 
-        } else if (object1 instanceof Obstacle) {
+        } else if (object1 instanceof Obstacle && !(object1 instanceof PowerUp)) {
             if (object2 instanceof Player) {
                 toRemove.add(object1);
                 Player player = (Player) object2;
                 player.respawn();
                 System.out.println("Player collision with obstacle");
+            }
+        } else if (object1 instanceof Player) {
+            if (object2 instanceof PowerUp) {
+                ((PowerUp)object2).powerUpPlayer((Player)object1);
+                toRemove.add(object2);
+                System.out.println("Collided with powerup");
             }
         }
     }

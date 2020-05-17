@@ -4,8 +4,8 @@ import shootergame.objects.Player;
 
 public class MovementBoost extends PowerUp {
 
-    public MovementBoost(int x, int y) {
-        super(x, y, "mspeed");
+    public MovementBoost(int x, int spawnTime) {
+        super(x, spawnTime, "mspeed");
     }
 
     @Override

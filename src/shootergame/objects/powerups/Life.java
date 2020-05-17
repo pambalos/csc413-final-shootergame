@@ -4,8 +4,8 @@ import shootergame.objects.Player;
 
 public class Life extends PowerUp {
 
-    public Life(int x, int y) {
-        super(x, y, "life");
+    public Life(int x, int spawnTime) {
+        super(x, spawnTime, "life");
     }
 
     @Override

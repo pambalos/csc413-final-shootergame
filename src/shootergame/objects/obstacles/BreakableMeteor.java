@@ -1,7 +1,5 @@
 package shootergame.objects.obstacles;
 
-import static shootergame.helpers.GameConstants.SCREEN_WIDTH;
-
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -19,7 +17,7 @@ public class BreakableMeteor extends Meteor {
             this.setSpeed(-1);
         }
         this.setSideSpeed(sideSpeed);
-        this.setY(-100);
+        this.setY(0-image.getHeight());
         this.setX(x);
         this.health = 50;
         this.setImage(image);

@@ -55,7 +55,7 @@ public abstract class GameObject {
      * default do nothing update allows for individual unique behavior
      */
     public void update() {
-
+        this.setY(this.getY() + speed);
     }
 
     public BufferedImage getImage() {

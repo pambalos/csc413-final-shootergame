@@ -21,7 +21,7 @@ public class SmallEnemy extends Ship implements Obstacle {
 
     public SmallEnemy(int x,int speed, int spawnTime, BufferedImage image, ArrayList<GameObject> gameObjects, Player player) {
         this.setX(x);
-        this.setY(-100);
+        this.setY(0-image.getHeight());
         this.setSpeed(speed);
         this.setImage(image);
         this.setHitBox(new Rectangle(x, this.getY(), this.getImage().getWidth(), this.getImage().getHeight()));
