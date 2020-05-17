@@ -47,7 +47,7 @@ public class ShooterGame extends JPanel  {
     private ArrayList<GameObject> gameObjects;
     private Player player;
     private boolean gameOver = false;
-
+    private int gameOverCounter = 0;
 
     public static void main(String[] args) {
         ShooterGame shooterGame = new ShooterGame();
@@ -55,7 +55,7 @@ public class ShooterGame extends JPanel  {
         CollisionHandler chandler = new CollisionHandler();
         LevelManager levelManager = new LevelManager(shooterGame.gameObjects, shooterGame.player);
         try {
-            while (true) {
+            do {
 
                 for (int i = 0; i < shooterGame.gameObjects.size(); i++) {
                     shooterGame.gameObjects.get(i).update();
@@ -74,8 +74,8 @@ public class ShooterGame extends JPanel  {
                 }
                 Thread.sleep(1000 / 120);
                 shooterGame.gameOver = levelManager.isGameOver();
-            }
-
+            } while (shooterGame.gameOverCounter <= 500);
+            System.exit(0);
         } catch (InterruptedException nm) {
             nm.printStackTrace();
         }
@@ -119,6 +119,7 @@ public class ShooterGame extends JPanel  {
         buffer.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         drawBufferImages(buffer);
         if (this.gameOver) {
+            gameOverCounter++;
             Font font = new Font("Serif", Font.PLAIN, 50);
             buffer.setFont(font);
             buffer.setColor(Color.CYAN);
