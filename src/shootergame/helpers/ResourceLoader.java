@@ -23,7 +23,7 @@ public class ResourceLoader {
             //Lasers
             path = SPACE_SHOOTER_PATH + "Lasers/";
             ResourceLoader.resources.put("playerLaser", read(new File(path + "laserBlue03.png")));
-            ResourceLoader.resources.put("enemy1Laser", read(new File(path + "laserRed02.png")));
+            ResourceLoader.resources.put("enemy1Laser", read(new File(path + "laserRed03.png")));
 
             //Enemies
             path = SPACE_SHOOTER_PATH + "Enemies/";

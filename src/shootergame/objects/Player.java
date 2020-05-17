@@ -21,7 +21,6 @@ public class Player extends Ship {
     private boolean shootPressed;
     private boolean overDriveActive;
 
-    private movement hackMove = movement.backward;
     private int lives;
     private int ogX, ogY;
     private int overDriveCounter;
@@ -30,16 +29,14 @@ public class Player extends Ship {
         overDriveActive = active;
     }
 
-    public void repel() {
-        this.move(hackMove);
-    }
-
     public int getLives() {
         return lives;
     }
 
-    public void loseLife() {
-        this.lives--;
+    private void loseLife() {
+        if (this.lives > 0) {
+            this.lives--;
+        }
     }
 
     public void respawn() {
@@ -124,20 +121,16 @@ public class Player extends Ship {
     public void update() {
         if (this.UpPressed && !this.downPressed) {
             this.move(movement.forward);
-            this.hackMove = movement.backward;
         }
         if (this.downPressed && !this.UpPressed) {
             this.move(movement.backward);
-            this.hackMove = movement.forward;
         }
 
         if (this.leftPressed && !this.rightPressed) {
             this.move(movement.left);
-            this.hackMove = movement.right;
         }
         if (this.rightPressed && !this.leftPressed) {
             this.move(movement.right);
-            this.hackMove = movement.left;
         }
 
         if (this.shootPressed) {
@@ -156,13 +149,13 @@ public class Player extends Ship {
 
         if (overDriveActive) {
             this.overDriveCounter++;
-            if (this.overDriveCounter > 1000) {
+            if (this.overDriveCounter > 600) {
                 toggleOverDrive(false);
                 this.overDriveCounter = 0;
             }
         }
 
-        if (this.getHealth() < 1) {
+        if (this.getHealth() < 1 && this.getLives() > 0) {
             this.respawn();
         }
     }

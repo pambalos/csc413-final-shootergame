@@ -8,7 +8,9 @@ public abstract class Ship extends Collidable {
     private long counter = 0, loadTime = 150;
 
     public void takeDamage(int i) {
-        this.health -= i;
+        if (health > 0) {
+            this.health -= i;
+        }
     }
 
     public int getHealth() {

@@ -8,7 +8,6 @@ import shootergame.objects.Laser;
 import shootergame.objects.Collidable;
 import shootergame.objects.GameObject;
 import shootergame.objects.Player;
-import shootergame.objects.obstacles.Meteor;
 import shootergame.objects.powerups.PowerUp;
 
 import java.util.ArrayList;
@@ -30,16 +29,14 @@ public class CollisionHandler {
                 }
             }
         }
-        cleanUpBullets(gameObjects);
+        cleanUpGameObjects(gameObjects);
         return toRemove;
     }
 
-    private void cleanUpBullets(ArrayList<GameObject> gameObjects) {
+    private void cleanUpGameObjects(ArrayList<GameObject> gameObjects) {
         for (int i = 0; i < gameObjects.size(); i++) {
-            if (gameObjects.get(i) instanceof Laser) {
-                if (((Laser)gameObjects.get(i)).isOutOfBounds()) {
-                    toRemove.add(gameObjects.get(i));
-                }
+            if (gameObjects.get(i).longGone()) {
+                toRemove.add(gameObjects.get(i));
             }
         }
     }
@@ -76,6 +73,9 @@ public class CollisionHandler {
                 toRemove.add(object1);
                 Player player = (Player) object2;
                 player.respawn();
+                if (player.getLives() < 1) {
+                    toRemove.add(object2);
+                }
                 System.out.println("Player collision with obstacle");
             }
         } else if (object1 instanceof Player) {

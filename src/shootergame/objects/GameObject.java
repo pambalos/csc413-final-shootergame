@@ -58,6 +58,10 @@ public abstract class GameObject {
         this.setY(this.getY() + speed);
     }
 
+    public boolean longGone() {
+        return (this.getY() > SCREEN_HEIGHT + 300 || this.getY() < -300);
+    }
+
     public BufferedImage getImage() {
         return image;
     }

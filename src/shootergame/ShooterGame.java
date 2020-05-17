@@ -46,6 +46,7 @@ public class ShooterGame extends JPanel  {
     private JFrame jFrame;
     private ArrayList<GameObject> gameObjects;
     private Player player;
+    private boolean gameOver = false;
 
 
     public static void main(String[] args) {
@@ -63,54 +64,20 @@ public class ShooterGame extends JPanel  {
 
                 levelManager.manageLevel(); //should call manager tick
 
-                /*
-                ArrayList<GameObject> toRemove = new ArrayList<>();
-                int currObjs = shooterGame.gameObjects.size();
-                for (int i1 = 0; i1 < currObjs; i1++) {
-                    for (int i2 = 0; i2 < currObjs; i2++) {
-                        if (i1 != i2) {
-                            GameObject object1 = shooterGame.gameObjects.get(i1);
-                            GameObject object2 = shooterGame.gameObjects.get(i2);
-                            if (chandler.collisionCompare(object1, object2)) {
-                                chandler.handleCollisionInstance(object1, object2);
-                            }
-                        }
-                    }
-                }
-
-                 */
                 ArrayList<GameObject> toRemove = chandler.handleCollisions(shooterGame.gameObjects);
 
                 for (GameObject o : toRemove) {
                     shooterGame.gameObjects.remove(o);
                     if (o instanceof Player) { //ship died so end game
-                        shooterGame.endGame();
-                        return;
+                        shooterGame.gameOver = true;
                     }
                 }
                 Thread.sleep(1000 / 120);
+                shooterGame.gameOver = levelManager.isGameOver();
             }
 
         } catch (InterruptedException nm) {
             nm.printStackTrace();
-        }
-    }
-
-    private void endGame() { // this is printing to the minimaps for some reason
-        this.world = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        super.paintComponent(buffer);
-        buffer = world.createGraphics();
-        buffer.setColor(Color.DARK_GRAY);
-        buffer.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT+30);
-        Font font = new Font("Serif", Font.PLAIN, 50);
-        buffer.setFont(font);
-        buffer.setColor(Color.CYAN);
-        buffer.drawString("GAME OVER!!", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
@@ -119,7 +86,6 @@ public class ShooterGame extends JPanel  {
         this.jFrame = new JFrame("Player Rotation");
         this.world = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
         gameObjects = new ArrayList<>();
-
 
         this.player = new Player(SCREEN_WIDTH/2, 650, ResourceLoader.getResourceImage("playerShip"), this.gameObjects);
 
@@ -151,36 +117,14 @@ public class ShooterGame extends JPanel  {
         buffer = world.createGraphics();
         buffer.setColor(Color.black);
         buffer.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
         drawBufferImages(buffer);
-        //this.player.drawImage(buffer);
+        if (this.gameOver) {
+            Font font = new Font("Serif", Font.PLAIN, 50);
+            buffer.setFont(font);
+            buffer.setColor(Color.CYAN);
+            buffer.drawString("GAME OVER!!", SCREEN_WIDTH/2-150, SCREEN_HEIGHT/2);
+        }
         g2.drawImage(world, 0, 0, null);
-        //drawBufferImages(buffer); //needed so split my loops into two loops because if they werent painted in the right order, cant see shiza
-        //drawG2Images(buffer); //see above comment
-    }
-
-    /**
-     * This method needs to loop through the game objects to find the overlay objects
-     * only printing them at the right stage so everything shows up and isnt missing or covered
-     * @param g2 to draw all images which should be drawn on g2 overlay
-     */
-    private void drawG2Images(Graphics2D g2) {
-        /*
-        //First layer of overlays
-        for (int i = 0; i < this.gameObjects.size(); i++) {
-            if (this.gameObjects.get(i) instanceof Screen) {
-                this.gameObjects.get(i).drawImage(g2);
-            }
-        }
-
-        //Second layer of overlays - needs loop else sometimes you get concurrent error
-        for (int i = 0; i < this.gameObjects.size(); i++) {
-            if (this.gameObjects.get(i) instanceof HUD) {
-                this.gameObjects.get(i).drawImage(g2);
-            }
-        }
-
-         */
     }
 
     /**
@@ -190,12 +134,6 @@ public class ShooterGame extends JPanel  {
     private void drawBufferImages(Graphics2D buffer) {
         for (int i = 0; i < this.gameObjects.size(); i++) {
             this.gameObjects.get(i).drawImage(buffer);
-            /*
-            if (!(this.gameObjects.get(i) instanceof Screen) && !(this.gameObjects.get(i) instanceof HUD)) {
-                this.gameObjects.get(i).drawImage(buffer);
-            }
-
-             */
         }
     }
 }

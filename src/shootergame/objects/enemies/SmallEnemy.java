@@ -2,7 +2,9 @@ package shootergame.objects.enemies;
 
 import static shootergame.helpers.GameConstants.SCREEN_HEIGHT;
 
+import shootergame.helpers.ResourceLoader;
 import shootergame.objects.GameObject;
+import shootergame.objects.Laser;
 import shootergame.objects.Obstacle;
 import shootergame.objects.Player;
 import shootergame.objects.Ship;
@@ -12,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
- * If I had more time, this would be one among many enemy types...
+ * If I had more time, this would be one among many enemy types... And they would shoot...
  */
 public class SmallEnemy extends Ship implements Obstacle {
 
@@ -39,6 +41,12 @@ public class SmallEnemy extends Ship implements Obstacle {
             player.takeDamage(1);
             getGameObjects().remove(this);
         }
+        if (this.getCounter() > this.getLoadTime()) {
+            getGameObjects().add(new Laser(this.getX(), this.getY(), ResourceLoader.getResourceImage("enemy1Laser"), this, this.getSpeed()*2));
+            this.setCounter(0);
+            System.out.println("Should shoot...");
+        }
+        this.setCounter(this.getCounter()+1);
     }
 
     @Override

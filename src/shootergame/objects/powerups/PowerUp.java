@@ -10,8 +10,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public abstract class PowerUp extends Collidable implements Obstacle {
-    String fileKey;
-    int spawnTime;
+    private String fileKey;
+    private int spawnTime;
 
     public PowerUp(int x, int spawnTime, String key) {
         this.setX(x);

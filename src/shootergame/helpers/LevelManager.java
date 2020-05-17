@@ -37,14 +37,27 @@ public class LevelManager {
     private long t, counter;
 
     public boolean isGameOver() {
+        boolean playerAlive = false;
+        for (int i = 0; i < gameObjects.size(); i++) {
+            if (gameObjects.get(i) instanceof Player) {
+                playerAlive = true;
+            }
+        }
+
+        if (!playerAlive) return true;
+
+        boolean res;
         if (enemiesNObstacles.isEmpty()) {
             for (int i = 0; i < gameObjects.size(); i++) {
                 if (gameObjects.get(i) instanceof Obstacle) {
                     return false;
                 }
             }
+            res = true;
+        } else {
+            res = false;
         }
-        return true;
+        return res;
     }
 
     public void manageLevel() {
