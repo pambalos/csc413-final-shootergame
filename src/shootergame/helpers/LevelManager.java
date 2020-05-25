@@ -1,5 +1,6 @@
 package shootergame.helpers;
 
+import shootergame.ShooterGame;
 import shootergame.objects.GameObject;
 import shootergame.objects.Laser;
 import shootergame.objects.Obstacle;
@@ -15,7 +16,10 @@ import shootergame.objects.powerups.Shield;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /*
  * map values
@@ -82,8 +86,49 @@ public class LevelManager {
         this.t = 0; this.counter = 0;
         try {
 
-            BufferedReader mapReader = new BufferedReader(new FileReader("resources/maps/level1"));
+            //BufferedReader mapReader = new BufferedReader(new FileReader("resources/maps/level1"));
 
+            try (InputStream inputStream = ShooterGame.class.getClassLoader().getResourceAsStream("resources/maps/level1");
+                    BufferedReader mapReader = new BufferedReader(new InputStreamReader(inputStream))) {
+                String row = mapReader.readLine();
+                if (row == null) throw new IOException("Nothing in map file");
+
+                String[] mapInfo = row.split(",");
+                int numCols = Integer.parseInt(mapInfo[1]);
+                int numRows = Integer.parseInt(mapInfo[0]);
+
+                for (int currRow = 0; currRow < numRows; currRow++) {
+                    row = mapReader.readLine();
+                    mapInfo = row.split(",");
+                    for (int currCol = 0; currCol < numCols; currCol++) {
+                        switch (Integer.parseInt(mapInfo[currCol])) {
+                            case 1 :
+                                enemiesNObstacles.add(new SmallEnemy(currCol*100, 1, currRow, ResourceLoader.getResourceImage("enemy1"), this.gameObjects, player));
+                                break;
+                            case 4:
+                                enemiesNObstacles.add(new Life(currCol*100, currRow));
+                                break;
+                            case 5:
+                                enemiesNObstacles.add(new MovementBoost(currCol*100, currRow));
+                                break;
+                            case 6:
+                                enemiesNObstacles.add(new OverDrive(currCol*100, currRow));
+                                break;
+                            case 7:
+                                enemiesNObstacles.add(new Shield(currCol*100, currRow));
+                                break;
+                            case 13 :
+                                System.out.println("Adding Meteor");
+                                enemiesNObstacles.add(new BreakableMeteor(currCol*100, ResourceLoader.getResourceImage("breakableMeteorBig"), currRow, 2));
+                                break;
+                            case 23:
+                                enemiesNObstacles.add(new UnbreakableMeteor(currCol*100, ResourceLoader.getResourceImage("unbreakableMeteorBig"), currRow, 1));
+                                break;
+                        }
+                    }
+                }
+            }
+            /*
             String row = mapReader.readLine();
             if (row == null) throw new IOException("Nothing in map file");
 
@@ -120,7 +165,7 @@ public class LevelManager {
                             break;
                     }
                 }
-            }
+            } */
         } catch (IOException e) {
             e.printStackTrace();
         }
